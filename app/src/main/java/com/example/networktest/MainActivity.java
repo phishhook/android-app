@@ -1,8 +1,10 @@
 package com.example.networktest;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
@@ -79,17 +81,35 @@ public class MainActivity extends AppCompatActivity {
         Uri my_uri= getIntent().getData();
 
         if (my_uri != null) {
-            String url = my_uri.toString();
-            String extractedUrl = extractUrl(url);
-            Uri uri = Uri.parse(extractedUrl);
-            Log.d("Received link: ", uri.toString());
-            // Launch NotificationSystemActivity
-            Intent notificationIntent = new Intent(MainActivity.this, NotificationSystemActivity.class);
-            notificationIntent.setData(uri);
-            startActivity(notificationIntent);
+            launch_analysis(my_uri);
+//            String url = my_uri.toString();
+//            String extractedUrl = extractUrl(url);
+//            Uri uri = Uri.parse(extractedUrl);
+//            Log.d("Received link: ", uri.toString());
+//            // Launch NotificationSystemActivity
+//            Intent notificationIntent = new Intent(MainActivity.this, NotificationSystemActivity.class);
+//            notificationIntent.setData(uri);
+//            startActivity(notificationIntent);
         }
-//        Intent historyIntent = new Intent(MainActivity.this, LinkHistoryActivity.class);
-//        startActivity(historyIntent);
+        //Intent historyIntent = new Intent(MainActivity.this, LinkHistoryFragment.class);
+        //startActivity(historyIntent);
+
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_container,LinkHistoryFragment.newInstance(null,null));
+        transaction.addToBackStack(null);
+        transaction.commit();
+
+    }
+
+    public void launch_analysis(@NonNull Uri my_uri){
+        String url = my_uri.toString();
+        String extractedUrl = extractUrl(url);
+        Uri uri = Uri.parse(extractedUrl);
+        Log.d("Received link: ", uri.toString());
+        // Launch NotificationSystemActivity
+        Intent notificationIntent = new Intent(MainActivity.this, NotificationSystemActivity.class);
+        notificationIntent.setData(uri);
+        startActivity(notificationIntent);
     }
 
     private static String extractUrl(String inputUrl) {

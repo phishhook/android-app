@@ -1,7 +1,9 @@
 package com.example.networktest;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -94,7 +96,7 @@ public class LinkAnalysisActivity extends Activity {
                 }
 
                 try {
-                    jsonBody.put("user_id", 1);
+                    jsonBody.put("user_id", getUserId());
                     jsonBody.put("url", urlToAnalyze);
                     jsonBody.put("is_phishing", is_phishing);
                 } catch (JSONException e) {
@@ -182,6 +184,11 @@ public class LinkAnalysisActivity extends Activity {
 
         // Finish the activity or perform other actions as needed
         finish();
+    }
+
+    private int getUserId() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        return sharedPref.getInt("userId", -2);
     }
 
 }

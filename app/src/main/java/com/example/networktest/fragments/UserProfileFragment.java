@@ -2,6 +2,7 @@ package com.example.networktest.fragments;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.networktest.MainActivity;
 import com.example.networktest.R;
 import com.example.networktest.authentication.LoginFragment;
 
@@ -36,6 +38,18 @@ public class UserProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity parent = (MainActivity) getActivity();
+        Uri my_uri = parent.getIntent().getData();
+        if (my_uri != null){
+            parent.launch_analysis(my_uri);
+        }
+
+
     }
 
     @Override
