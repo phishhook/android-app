@@ -76,7 +76,7 @@ public class LinkAnalysisActivity extends Activity {
 
     private int fetchUserId() {
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getInt("userId", -1);
+        return sharedPref.getInt("userId", -2);
     }
 
     protected void writeResultToDatabase(String result) {
