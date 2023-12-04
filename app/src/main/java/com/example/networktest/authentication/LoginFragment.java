@@ -199,6 +199,7 @@ public class LoginFragment extends Fragment {
                         JSONObject jsonObject = new JSONObject(responseData);
                         String username = jsonObject.optString("username", null);
                         if (username != null && !username.isEmpty()) {
+                            storeUserId(jsonObject.optInt("id", -1));
                             // Invoke the callback with true and the username
                             callback.onUserChecked(true, username);
                         } else {
@@ -234,6 +235,13 @@ public class LoginFragment extends Fragment {
         SharedPreferences sharedPref = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong("lastLoginDate", System.currentTimeMillis());
+        editor.apply();
+    }
+
+    private void storeUserId(int user_id) {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("userId", user_id);
         editor.apply();
     }
 

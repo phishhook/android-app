@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RequestQueue queue;
 
+    protected int user_id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

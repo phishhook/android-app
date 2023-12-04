@@ -1,5 +1,7 @@
 package com.example.networktest.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -107,11 +109,12 @@ public class LinkHistoryFragment extends Fragment {
 
             try {
                 Log.d("JSON OUT", response.toString(1));
-
+                int user_id = getUserId();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject link = response.getJSONObject(i);
                     // TODO: use the actual user's ID instead of just 1
-                    if (link.getInt("user_id") == 1){
+
+                    if (link.getInt("user_id") == user_id){
                         String originalDateTime = link.getString("clicked_at");
                         String formattedDateTime = formatDateTime(originalDateTime);
 
@@ -146,5 +149,10 @@ public class LinkHistoryFragment extends Fragment {
             Log.e("DateFormatError", "Error in parsing date", e);
             return dateTime; // Return the original date if parsing fails
         }
+    }
+
+    private int getUserId() {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        return sharedPref.getInt("userId", 0);
     }
 }
