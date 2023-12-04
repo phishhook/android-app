@@ -3,4 +3,8 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ec2-18-224-251-242.us-east-2.compute.amazonaws.com</domain>
     </domain-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">ec2-34-226-215-44.compute-1.amazonaws.com</domain>
+    </domain-config>
+
 </network-security-config>

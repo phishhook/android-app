@@ -3,6 +3,7 @@ package com.example.networktest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import com.airbnb.lottie.LottieAnimationView;
@@ -43,6 +44,8 @@ public class LinkAnalysisActivity extends Activity {
         animationView = findViewById(R.id.animationView);
         // Example URL for link analysis
         urlToAnalyze = getIntent().getStringExtra("url");
+
+        Log.d("Link analysis!!: ", urlToAnalyze);
 
         // Perform link analysis
         linkAnalysis(urlToAnalyze);
@@ -131,6 +134,8 @@ public class LinkAnalysisActivity extends Activity {
             resultIntent.putExtra("resultData", response);
             setResult(Activity.RESULT_OK, resultIntent);
 
+            Log.d("Response!!: ", response);
+
             animationView.setVisibility(View.GONE);
             // Finish the activity
             finish();
@@ -153,6 +158,8 @@ public class LinkAnalysisActivity extends Activity {
         public void onErrorResponse(VolleyError error) {
             // Extract relevant information from the error
             int statusCode = -1; // Default value
+            Log.d("Error!!: ", error.toString());
+
             if (error.networkResponse != null) {
                 statusCode = error.networkResponse.statusCode;
             }
