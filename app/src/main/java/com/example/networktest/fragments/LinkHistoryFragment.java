@@ -1,7 +1,9 @@
 package com.example.networktest.fragments;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.networktest.CustomRecyclerViewAdapter;
+import com.example.networktest.MainActivity;
 import com.example.networktest.R;
 import com.example.networktest.itemData;
 
@@ -66,6 +69,27 @@ public class LinkHistoryFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity parent = (MainActivity) getActivity();
+        Uri my_uri = parent.getIntent().getData();
+        if (my_uri != null){
+            parent.launch_analysis(my_uri);
+        }
+
+        String LinkApiURL = "http://ec2-18-224-251-242.us-east-2.compute.amazonaws.com:8080/links";
+        JsonArrayRequest jsonLinkRequest = new JsonArrayRequest(Request.Method.GET, LinkApiURL, links_a, linkDataListener, errorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("X-API-KEY", "phishhookRyJHCenIz97Q5LIDPmHhDyg9eddxaBO29omDuzM1D5BsDRKH5mo3j8pmBehoO2Roj0Z4zWuDHlNW4AJVrSnLZF6lUravmyje13YB1LBriXHxYlxLUDYeXmV");
+                return params;
+            }
+        };
+        queue.add(jsonLinkRequest);
     }
 
     @Override
@@ -110,6 +134,7 @@ public class LinkHistoryFragment extends Fragment {
             try {
                 Log.d("JSON OUT", response.toString(1));
                 int user_id = getUserId();
+                mDataList = new ArrayList<>();
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject link = response.getJSONObject(i);
                     // TODO: use the actual user's ID instead of just 1
