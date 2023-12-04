@@ -15,6 +15,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import android.content.SharedPreferences;
+import android.content.Context;
+
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,6 +74,11 @@ public class LinkAnalysisActivity extends Activity {
         queue.add(jsonMLRequest);
     }
 
+    private int fetchUserId() {
+        SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        return sharedPref.getInt("userId", -1);
+    }
+
     protected void writeResultToDatabase(String result) {
         String LinkApiURL = "http://ec2-18-224-251-242.us-east-2.compute.amazonaws.com:8080/link";
         StringRequest jsonLinkRequest = new StringRequest(Request.Method.POST, LinkApiURL, linkDataListener, errorListener) {
@@ -93,10 +102,14 @@ public class LinkAnalysisActivity extends Activity {
                     is_phishing = "indeterminate";
                 }
 
+
+                int userId = fetchUserId();
+                Log.d("User ID!!!",  String.valueOf(userId));
                 try {
-                    jsonBody.put("user_id", 1);
+                    jsonBody.put("user_id", userId);
                     jsonBody.put("url", urlToAnalyze);
                     jsonBody.put("is_phishing", is_phishing);
+                    jsonBody.put("percentage", result);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,12 +187,9 @@ public class LinkAnalysisActivity extends Activity {
     // Method to handle the error response
     private void handleErrorResponse(int statusCode) {
         // Use the status code to determine how to handle the error
-        if (statusCode == 400) {
-            // Handle 400 Bad Request
-        } else {
-            // Handle other error codes or situations
-        }
-
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("resultData", "N/A");
+        setResult(Activity.RESULT_OK, resultIntent);
         // Finish the activity or perform other actions as needed
         finish();
     }

@@ -6,5 +6,4 @@
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">ec2-34-226-215-44.compute-1.amazonaws.com</domain>
     </domain-config>
-
 </network-security-config>
