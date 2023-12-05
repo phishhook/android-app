@@ -69,7 +69,7 @@ public class LinkAnalysisActivity extends Activity {
         // ML model can take around 10 seconds to process a URL; timeout set to 15 seconds just to be safe
         jsonMLRequest.setRetryPolicy(new DefaultRetryPolicy(
                 15000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonMLRequest);
     }
@@ -190,8 +190,10 @@ public class LinkAnalysisActivity extends Activity {
     // Method to handle the error response
     private void handleErrorResponse(int statusCode) {
         // Use the status code to determine how to handle the error
+        String response = "N/A, " + urlToAnalyze;
+        writeResultToDatabase("N/A");
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("resultData", "N/A");
+        resultIntent.putExtra("resultData", response);
         setResult(Activity.RESULT_OK, resultIntent);
         // Finish the activity or perform other actions as needed
         finish();
