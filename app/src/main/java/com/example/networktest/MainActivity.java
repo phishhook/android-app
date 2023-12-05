@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Uri my_uri= getIntent().getData();
 
         if (my_uri != null) {
-            launch_analysis(my_uri);
+            //launch_analysis(my_uri);
 //            String url = my_uri.toString();
 //            String extractedUrl = extractUrl(url);
 //            Uri uri = Uri.parse(extractedUrl);
