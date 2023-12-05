@@ -76,7 +76,7 @@ public class LinkAnalysisActivity extends Activity {
 
     private int fetchUserId() {
         SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getInt("userId", -2);
+        return sharedPref.getInt("userId", -1);
     }
 
     protected void writeResultToDatabase(String result) {
@@ -142,7 +142,10 @@ public class LinkAnalysisActivity extends Activity {
         @Override
         public void onResponse(String response) {
             // Set the result with data before finishing
-            writeResultToDatabase(response);
+            String[] responseArr = response.split(",");
+            String percent = responseArr[0];
+            urlToAnalyze = responseArr[1].trim();
+            writeResultToDatabase(percent);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("resultData", response);
             setResult(Activity.RESULT_OK, resultIntent);

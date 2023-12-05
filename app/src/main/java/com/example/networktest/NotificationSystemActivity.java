@@ -74,12 +74,16 @@ public class NotificationSystemActivity extends Activity {
                 // Retrieve the result data
                 String resultData = data.getStringExtra("resultData");
                 Log.d("Received resultData: ", resultData);
-                displayResult(resultData);
+                String[] responseArr = resultData.split(",");
+                String percent = responseArr[0];
+                url = responseArr[1].trim();
+                displayResult(percent);
                 // Handle the result data accordingly
                 // You can now use the 'resultData' in NotificationSystemActivity
             } else {
                 // Link analysis failed or was canceled
                 // Handle the result accordingly
+                displayResult("N/A");
             }
         }
     }
