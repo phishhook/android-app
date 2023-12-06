@@ -2,15 +2,27 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+  
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="16dp"
         tools:context=".fragments.UserProfileFragment"
         >
 
+        <!-- "Link analyzed" TextView -->
+        <TextView
+            android:id="@+id/linkAnalyzedTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Link Analyzed"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"/>
 
         <!-- New Container for "Link analyzed" -->
         <RelativeLayout
@@ -39,6 +51,16 @@
                 android:layout_marginTop="8dp"
                 android:background="@android:color/darker_gray" />
 
+        <!-- "Outcome" TextView -->
+        <TextView
+            android:id="@+id/outcomeTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Outcome"
+            android:textStyle="bold"
+            android:textSize="24sp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"/>
             <!-- Text showing the link analyzed -->
             <TextView
                 android:id="@+id/linkResultTextView"
@@ -86,7 +108,51 @@
                 android:layout_below="@id/dividerView"
                 android:layout_marginTop="8dp"
                 android:visibility="gone"/>
+         </RelativeLayout>
 
+        <!-- Button to "Link History"-->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/linkHistoryBtn"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Continue to Link History"
+            android:textColor="@color/softBlack"
+            android:fontFamily="@font/font_family"
+            android:textStyle="normal"
+            android:textFontWeight="700"
+            android:textSize="40px"
+            android:backgroundTint="@color/secondaryAccent"
+            app:cornerRadius="4dp"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            />
+
+        <!-- Button "Continue to link" -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/actionButton"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="Continue to default browser"
+            android:textColor="@color/softBlack"
+            android:fontFamily="@font/font_family"
+            android:textStyle="normal"
+            android:textFontWeight="700"
+            android:textSize="40px"
+            android:backgroundTint="@color/secondary"
+            android:layout_below="@id/linkHistoryBtn"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+            />
+
+    </RelativeLayout>
             <!-- TextView -->
             <TextView
                 android:id="@+id/resultTextView"
@@ -106,7 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/containerLayout">
-
+          
             <!-- Button "Continue to link" -->
             <Button
                 android:id="@+id/actionButton"

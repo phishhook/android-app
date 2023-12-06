@@ -56,9 +56,9 @@ public class CustomRecyclerViewAdapter extends RecyclerView.Adapter<CustomRecycl
     // This method binds the data to the ViewHolder.
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.url_view.setText("Link: " + list.get(position).url);
-        holder.clicktime_view.setText("Date: " + list.get(position).clicktime);
-        holder.verdict_view.setText("Status: " + list.get(position).verdict);
+        holder.url_view.setText(list.get(position).url);
+        holder.clicktime_view.setText(list.get(position).clicktime);
+        holder.verdict_view.setText(list.get(position).verdict);
     }
 
     // Setting the name and value in the TextViews from the itemData instance at this position.

@@ -102,7 +102,6 @@ public class LinkAnalysisActivity extends Activity {
                     is_phishing = "indeterminate";
                 }
 
-
                 int userId = fetchUserId();
                 Log.d("User ID!!!",  String.valueOf(userId));
                 try {
@@ -127,7 +126,6 @@ public class LinkAnalysisActivity extends Activity {
                  return "application/json; charset=utf-8";
             }
         };
-
 
         // Timeout set to 15 seconds just to be safe
         jsonLinkRequest.setRetryPolicy(new DefaultRetryPolicy(

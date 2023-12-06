@@ -16,14 +16,19 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.networktest.fragments.LinkHistoryFragment;
 
-public class NotificationSystemActivity extends Activity {
+public class NotificationSystemActivity extends AppCompatActivity {
 
     private TextView resultTextView;
 
     private TextView urlView;
+
+    private Button linkHistoryBtn;
 
     private Button actionButton;
 
@@ -45,6 +50,7 @@ public class NotificationSystemActivity extends Activity {
         resultImageView = findViewById(R.id.resultImageView);
         resultTextView= findViewById(R.id.resultTextView);
         urlView = findViewById(R.id.linkResultTextView);
+        linkHistoryBtn = findViewById(R.id.linkHistoryBtn);
         actionButton = findViewById(R.id.actionButton);
         continueAnywayTextView = findViewById(R.id.continueAnyway);
 
@@ -59,6 +65,13 @@ public class NotificationSystemActivity extends Activity {
             public void onClick(View view) {
                 // Handle the click event
                 openLinkInBrowser();
+            }
+        });
+
+        linkHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLinkHistory();
             }
         });
 
@@ -106,6 +119,12 @@ public class NotificationSystemActivity extends Activity {
         } catch (android.content.ActivityNotFoundException e) {
             System.out.println("Error opening email client");
         }
+    }
+
+    private void openLinkHistory() {
+        Intent intent = new Intent(NotificationSystemActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Close the current activity
     }
 
     @Override

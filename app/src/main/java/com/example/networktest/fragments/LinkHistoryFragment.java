@@ -177,7 +177,11 @@ public class LinkHistoryFragment extends Fragment {
     }
 
     private int getUserId() {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
-        return sharedPref.getInt("userId", 0);
+        if (getActivity() != null) {
+            SharedPreferences sharedPref = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+            return sharedPref.getInt("userId", 0);
+        } else {
+            return 0;
+        }
     }
 }
