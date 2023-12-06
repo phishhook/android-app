@@ -68,7 +68,7 @@ public class LinkAnalysisActivity extends Activity {
         };
         // ML model can take around 10 seconds to process a URL; timeout set to 15 seconds just to be safe
         jsonMLRequest.setRetryPolicy(new DefaultRetryPolicy(
-                15000,
+                22000,
                 0,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(jsonMLRequest);
