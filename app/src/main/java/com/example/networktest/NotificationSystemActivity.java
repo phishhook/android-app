@@ -12,14 +12,19 @@ import android.widget.ImageView;
 import android.widget.Button;
 
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
+import com.example.networktest.fragments.LinkHistoryFragment;
 
-public class NotificationSystemActivity extends Activity {
+public class NotificationSystemActivity extends AppCompatActivity {
 
     private TextView resultTextView;
 
     private TextView urlView;
+
+    private Button linkHistoryBtn;
 
     private Button actionButton;
 
@@ -37,7 +42,15 @@ public class NotificationSystemActivity extends Activity {
         resultImageView = findViewById(R.id.resultImageView);
         resultTextView= findViewById(R.id.resultTextView);
         urlView = findViewById(R.id.linkResultTextView);
+        linkHistoryBtn = findViewById(R.id.linkHistoryBtn);
         actionButton = findViewById(R.id.actionButton);
+
+        linkHistoryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLinkHistory();
+            }
+        });
 
         actionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +75,12 @@ public class NotificationSystemActivity extends Activity {
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         browserIntent.setPackage("com.android.chrome");
         startActivity(browserIntent);
+    }
+
+    private void openLinkHistory() {
+        Intent intent = new Intent(NotificationSystemActivity.this, MainActivity.class);
+        startActivity(intent);
+        finish(); // Close the current activity
     }
 
     @Override

@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".fragments.UserProfileFragment"
     android:orientation="vertical"
+    android:padding="16dp"
     >
 
     <!-- Header TextView for 'User Profile' -->
@@ -24,10 +25,67 @@
         android:layout_marginBottom="10dp"
         android:background="@color/primary" />
 
+    <!-- Divider Line Beneath Header -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anonymous Link Storage"
+            android:textSize="24sp"
+            android:textColor="@color/whiteAccent"
+            android:fontFamily="@font/font_family"
+            android:layout_marginEnd="8dp"/>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switch_anon_link"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:thumb="@drawable/switch_ios_selector"
+            app:track="@drawable/switch_ios_track" />
+
+    </LinearLayout>
+
+    <!-- Divider Line Below Switch -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="16dp"/>
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <!-- Link to Settings Button-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/settingsBtn"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="Link to Default Browser Settings"
+        android:fontFamily="@font/font_family"
+        android:textStyle="normal"
+        android:textFontWeight="700"
+        android:textSize="48px"
+        android:backgroundTint="@color/secondaryAccent"
+        app:cornerRadius="4dp"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        />
 
     <!-- Log Out Button-->
     <com.google.android.material.button.MaterialButton
