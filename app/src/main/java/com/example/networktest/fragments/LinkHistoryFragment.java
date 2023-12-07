@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class LinkHistoryFragment extends Fragment {
     private RequestQueue queue;
     private JSONArray links_a;
     private JSONObject links;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public LinkHistoryFragment() {
         // Required empty public constructor
@@ -96,7 +98,9 @@ public class LinkHistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.link_history_fragment, container, false);
+        View view = inflater.inflate(R.layout.link_history_fragment, container, false);
+        swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);
+        return view;
     }
 
     @Override
@@ -117,6 +121,8 @@ public class LinkHistoryFragment extends Fragment {
             }
         };
         queue.add(jsonLinkRequest);
+
+        initSwipeRefreshLayout();
     }
 
     protected void updateRecyclerView(){
@@ -183,5 +189,20 @@ public class LinkHistoryFragment extends Fragment {
         } else {
             return 0;
         }
+    }
+
+    private void initSwipeRefreshLayout() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // Call the method to refresh data
+                refreshData();
+            }
+        });
+    }
+
+    private void refreshData() {
+        updateRecyclerView();
+        swipeRefreshLayout.setRefreshing(false); // This will hide the spinner
     }
 }

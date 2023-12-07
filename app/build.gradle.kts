@@ -40,6 +40,7 @@ android {
 
 
 dependencies {
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.0") // Use the latest version
     implementation ("com.hbb20:ccp:2.7.0") // Use the latest version
     implementation("com.google.android.material:material:1.4.0") // Use the latest version
