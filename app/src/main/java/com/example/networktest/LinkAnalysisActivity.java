@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,6 +81,7 @@ public class LinkAnalysisActivity extends Activity {
         return sharedPref.getInt("userId", -1);
     }
 
+
     protected void writeResultToDatabase(String result) {
         String LinkApiURL = "http://ec2-18-224-251-242.us-east-2.compute.amazonaws.com:8080/link";
         StringRequest jsonLinkRequest = new StringRequest(Request.Method.POST, LinkApiURL, linkDataListener, errorListener) {
@@ -103,10 +106,26 @@ public class LinkAnalysisActivity extends Activity {
                 }
 
                 int userId = fetchUserId();
+                try {
+                    // Parse the URL
+                    url = new URL(urlToAnalyze);
+
+                    // Get the host part
+                    host = url.getHost();
+
+                    String urlWithoutProtocol = urlToAnalyze.replace(url.getProtocol() + "://", "");
+
+
+                    Log.d("Host part: ", urlWithoutProtocol);
+                } catch (MalformedURLException e) {
+                    // Handle MalformedURLException
+                    e.printStackTrace();
+                }
+
                 Log.d("User ID!!!",  String.valueOf(userId));
                 try {
                     jsonBody.put("user_id", userId);
-                    jsonBody.put("url", urlToAnalyze);
+                    jsonBody.put("url", host);
                     jsonBody.put("is_phishing", is_phishing);
                     jsonBody.put("percentage", result);
                 } catch (JSONException e) {
