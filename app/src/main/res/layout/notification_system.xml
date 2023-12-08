@@ -2,204 +2,116 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  
-    <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="16dp"
-        tools:context=".fragments.UserProfileFragment"
-        >
+        tools:context=".fragments.UserProfileFragment">
 
         <!-- "Link analyzed" TextView -->
         <TextView
             android:id="@+id/linkAnalyzedTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Link Analyzed"
             android:textSize="24sp"
-            android:textStyle="bold"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
+            android:textStyle="bold" />
 
-        <!-- New Container for "Link analyzed" -->
-        <RelativeLayout
-            android:id="@+id/linkInfoContainer"
+        <!-- Line Divider -->
+        <View
+            android:id="@+id/linkDividerView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <!-- "Link analyzed" TextView -->
-            <TextView
-                android:id="@+id/linkAnalyzedTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Link Analyzed"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
-
-            <!-- Line -->
-            <View
-                android:id="@+id/linkDividerView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/linkAnalyzedTextView"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray" />
+            android:layout_height="1dp"
+            android:layout_below="@id/linkAnalyzedTextView"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
 
         <!-- "Outcome" TextView -->
         <TextView
             android:id="@+id/outcomeTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Outcome"
-            android:textStyle="bold"
-            android:textSize="24sp"
+            android:layout_below="@id/linkDividerView"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"/>
-            <!-- Text showing the link analyzed -->
-            <TextView
-                android:id="@+id/linkResultTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/linkDividerView"
-                android:layout_marginTop="8dp"
-                android:text="http://example.com"
-                android:textSize="16sp"/>
-        </RelativeLayout>
+            android:text="Outcome"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
-        <RelativeLayout
-            android:id="@+id/containerLayout"
-            android:layout_width="match_parent"
+        <!-- Text showing the link analyzed -->
+        <TextView
+            android:id="@+id/linkResultTextView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/linkInfoContainer"
-            android:layout_marginTop="30dp">
+            android:layout_below="@id/outcomeTextView"
+            android:layout_marginTop="8dp"
+            android:text="http://example.com"
+            android:textSize="16sp" />
 
-            <!-- "Outcome" TextView -->
-            <TextView
-                android:id="@+id/outcomeTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Outcome"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:layout_marginTop="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp"/>
+        <!-- Second Line Divider -->
+        <View
+            android:id="@+id/dividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linkResultTextView"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
 
-            <!-- Line -->
-            <View
-                android:id="@+id/dividerView"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/outcomeTextView"
-                android:layout_marginTop="8dp"
-                android:background="@android:color/darker_gray" />
+        <!-- ImageView -->
+        <ImageView
+            android:id="@+id/resultImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_below="@id/dividerView"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
 
-            <!-- ImageView -->
-            <ImageView
-                android:id="@+id/resultImageView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_below="@id/dividerView"
-                android:layout_marginTop="8dp"
-                android:visibility="gone"/>
-         </RelativeLayout>
+        <TextView
+            android:id="@+id/resultTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/resultImageView"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="180dp"
+            android:text="Analyzing..."
+            android:textSize="18sp"
+            android:visibility="gone"/>
 
-        <!-- Button to "Link History"-->
+        <!-- Button to "Link History" -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/linkHistoryBtn"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/resultImageView"
             android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
             android:text="Continue to Link History"
-            android:textColor="@color/softBlack"
-            android:fontFamily="@font/font_family"
-            android:textStyle="normal"
-            android:textFontWeight="700"
-            android:textSize="40px"
-            android:backgroundTint="@color/secondaryAccent"
-            app:cornerRadius="4dp"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            />
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
 
         <!-- Button "Continue to link" -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/actionButton"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Continue to default browser"
-            android:textColor="@color/softBlack"
-            android:fontFamily="@font/font_family"
-            android:textStyle="normal"
-            android:textFontWeight="700"
-            android:textSize="40px"
-            android:backgroundTint="@color/secondary"
             android:layout_below="@id/linkHistoryBtn"
-            style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-            />
+            android:layout_marginTop="24dp"
+            android:text="Continue to default browser"
+            style="@style/Widget.MaterialComponents.Button.UnelevatedButton" />
 
-    </RelativeLayout>
-            <!-- TextView -->
-            <TextView
-                android:id="@+id/resultTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/resultImageView"
-                android:layout_centerVertical="true"
-                android:layout_marginTop="180dp"
-                android:text="Analyzing..."
-                android:textSize="18sp"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
-        <!-- New Container for "Continue to link" Button -->
-        <RelativeLayout
-            android:id="@+id/buttonContainer"
-            android:layout_width="match_parent"
+        <!-- TextView "Proceed to link anyway" -->
+        <TextView
+            android:id="@+id/continueAnyway"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/containerLayout">
-          
-            <!-- Button "Continue to link" -->
-            <Button
-                android:id="@+id/actionButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/rounded_button"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:layout_marginStart="8dp"
-                android:layout_marginEnd="8dp" />
-
-            <!-- TextView "Proceed to link anyway" -->
-            <TextView
-                android:id="@+id/continueAnyway"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Proceed to link anyway..."
-                android:layout_centerVertical="true"
-                android:layout_marginTop="180dp"
-                android:textSize="18sp"
-                android:clickable="true"
-                android:onClick="proceedToLinkAnyway"
-                android:visibility="gone"
-            />
-
-        </RelativeLayout>
+            android:layout_below="@id/actionButton"
+            android:layout_marginTop="24dp"
+            android:text="Proceed to link anyway..."
+            android:textSize="18sp"
+            android:clickable="true"
+            android:onClick="proceedToLinkAnyway"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </ScrollView>
