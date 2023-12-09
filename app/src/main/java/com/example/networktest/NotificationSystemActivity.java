@@ -175,7 +175,7 @@ public class NotificationSystemActivity extends AppCompatActivity {
                 // Display a message and image for an unsafe link
                 resultTextView.setText("We have determined this link is only " + result + " safe. "+
                         "We recommend not visiting this webpage");
-                setResultTextMargin(150);  // Set the desired margin
+                setResultTextMargin(25);  // Set the desired margin
                 resultImageView.setImageResource(R.drawable.phishing);
                 actionButton.setText("Back to Email Client");
                 continueAnywayTextView.setVisibility(View.VISIBLE);
@@ -185,7 +185,7 @@ public class NotificationSystemActivity extends AppCompatActivity {
             resultTextView.setText("We were not able to determine the safety of this link. Please " +
                     "proceed with caution");
             percent = -1;
-            setResultTextMargin(150);  // Set the desired margin
+            setResultTextMargin(25);  // Set the desired margin
             actionButton.setText("Back to Email Client");
             resultImageView.setImageResource(R.drawable.question);
             continueAnywayTextView.setVisibility(View.VISIBLE);

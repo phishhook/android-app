@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onResponse(String response) {
 
-            System.out.println(response.toString() + "&&&&&&&&&&&&&&&");
+            //System.out.println(response.toString() + "&&&&&&&&&&&&&&&");
         }
     };
 
@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            System.out.println(error + "#########");
+            //System.out.println(error + "#########");
         }
     };
 

@@ -38,6 +38,10 @@ public class LinkAnalysisActivity extends Activity {
 
     String urlToAnalyze;
 
+    // This is the URL that is initially clicked on
+    // and not the final url that link analysis returns
+    String rawUrl;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +54,15 @@ public class LinkAnalysisActivity extends Activity {
         animationView = findViewById(R.id.animationView);
         // Example URL for link analysis
         urlToAnalyze = getIntent().getStringExtra("url");
+        rawUrl = urlToAnalyze;
 
-        Log.d("Link analysis!!: ", urlToAnalyze);
+        Log.d("Raw url: ", rawUrl);
+
+        //linkAnalysis(rawUrl);
+        checkIfLinkInDatabase(rawUrl);
 
         // Perform link analysis
-        linkAnalysis(urlToAnalyze);
+
     }
 
     protected void linkAnalysis(String url) {
@@ -81,10 +89,34 @@ public class LinkAnalysisActivity extends Activity {
         return sharedPref.getInt("userId", -1);
     }
 
+    protected void checkIfLinkInDatabase(String urlToAnalyze) {
+        String linkApiUrl = "http://ec2-18-224-251-242.us-east-2.compute.amazonaws.com:8080/links/analyze?url=" + urlToAnalyze;
+        StringRequest jsonLinkRequest = new StringRequest(Request.Method.GET, linkApiUrl, existingLinkDataListener, existingLinkErrorListener) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("X-API-KEY", "phishhookRyJHCenIz97Q5LIDPmHhDyg9eddxaBO29omDuzM1D5BsDRKH5mo3j8pmBehoO2Roj0Z4zWuDHlNW4AJVrSnLZF6lUravmyje13YB1LBriXHxYlxLUDYeXmV");
+                return params;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+        };
+
+        // Timeout set to 15 seconds just to be safe
+        jsonLinkRequest.setRetryPolicy(new DefaultRetryPolicy(
+                5000,
+                0,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(jsonLinkRequest);
+    }
 
     protected void writeResultToDatabase(String result) {
+
         String LinkApiURL = "http://ec2-18-224-251-242.us-east-2.compute.amazonaws.com:8080/link";
-        StringRequest jsonLinkRequest = new StringRequest(Request.Method.POST, LinkApiURL, linkDataListener, errorListener) {
+        StringRequest jsonLinkRequest = new StringRequest(Request.Method.POST, LinkApiURL, linkDataListener, writeToDatabaseErrorListener) {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -97,23 +129,25 @@ public class LinkAnalysisActivity extends Activity {
                 JSONObject jsonBody = new JSONObject();
                 String is_phishing;
 
-                if (!result.equals("N/A")) {
-                    float percent = Float.parseFloat(result.replace("%", ""));
-                    is_phishing = percent >= 50 ? "safe" : "phishing";
+                System.out.println("What is our result ?" + result);
+
+                if (result.equals("N/A")) {
+                    is_phishing = "indeterminate";
+                    System.out.println("invalid reeult?");
                 }
                 else {
-                    is_phishing = "indeterminate";
+                    float percent = Float.parseFloat(result);
+                    is_phishing = percent >= 50 ? "safe" : "phishing";
+                    System.out.println("valid reeult?");
                 }
 
+                String urlWithoutProtocol = "";
                 int userId = fetchUserId();
                 try {
                     // Parse the URL
-                    url = new URL(urlToAnalyze);
+                    URL url = new URL(rawUrl);
 
-                    // Get the host part
-                    host = url.getHost();
-
-                    String urlWithoutProtocol = urlToAnalyze.replace(url.getProtocol() + "://", "");
+                    urlWithoutProtocol = rawUrl.replace(url.getProtocol() + "://", "");
 
 
                     Log.d("Host part: ", urlWithoutProtocol);
@@ -125,7 +159,7 @@ public class LinkAnalysisActivity extends Activity {
                 Log.d("User ID!!!",  String.valueOf(userId));
                 try {
                     jsonBody.put("user_id", userId);
-                    jsonBody.put("url", host);
+                    jsonBody.put("url", rawUrl);
                     jsonBody.put("is_phishing", is_phishing);
                     jsonBody.put("percentage", result);
                 } catch (JSONException e) {
@@ -160,14 +194,15 @@ public class LinkAnalysisActivity extends Activity {
         public void onResponse(String response) {
             // Set the result with data before finishing
             String[] responseArr = response.split(",");
-            String percent = responseArr[0];
+            String percent = responseArr[0].trim().replace("%", "");
             urlToAnalyze = responseArr[1].trim();
             writeResultToDatabase(percent);
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("resultData", response);
+            String newResponse = responseArr[0]  + "," + rawUrl;
+            resultIntent.putExtra("resultData", newResponse);
             setResult(Activity.RESULT_OK, resultIntent);
 
-            Log.d("Response!!: ", response);
+            Log.d("Percent!!: ", percent);
 
             animationView.setVisibility(View.GONE);
             // Finish the activity
@@ -181,7 +216,38 @@ public class LinkAnalysisActivity extends Activity {
         @Override
         public void onResponse(String response) {
 
-            System.out.println(response.toString());
+            Log.d("linkDataListener??", response);
+        }
+    };
+
+    Response.Listener<String> existingLinkDataListener = new Response.Listener<String>() {
+
+        @Override
+        public void onResponse(String response) {
+
+            Log.d("exists??", response.toString());
+
+            // Parse the JSON string
+            JSONObject jsonObject = null;
+
+            try {
+                jsonObject = new JSONObject(response);
+                String percentage = jsonObject.getString("percentage");
+                System.out.println("Retreived percentage: " + percentage);
+                String responseForIntent = percentage + ", " + urlToAnalyze;
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("resultData", responseForIntent);
+                setResult(Activity.RESULT_OK, resultIntent);
+                animationView.setVisibility(View.GONE);
+                // Finish the activity
+                finish();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Extract the percentage value
+
+
         }
     };
 
@@ -191,7 +257,7 @@ public class LinkAnalysisActivity extends Activity {
         public void onErrorResponse(VolleyError error) {
             // Extract relevant information from the error
             int statusCode = -1; // Default value
-            Log.d("Error!!: ", error.toString());
+            Log.d("Error in link analysis!!: ", error.toString());
 
             if (error.networkResponse != null) {
                 statusCode = error.networkResponse.statusCode;
@@ -199,6 +265,37 @@ public class LinkAnalysisActivity extends Activity {
 
             // Pass relevant information to the method
             handleErrorResponse(statusCode);
+        }
+    };
+
+    Response.ErrorListener writeToDatabaseErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            // Extract relevant information from the error
+            int statusCode = -1; // Default value
+            Log.d("Error in database write!!: ", error.toString());
+
+            if (error.networkResponse != null) {
+                statusCode = error.networkResponse.statusCode;
+            }
+
+
+        }
+    };
+
+    Response.ErrorListener existingLinkErrorListener = new Response.ErrorListener() {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            // Extract relevant information from the error
+            int statusCode = -1; // Default value
+            Log.d("Link is not in database?!!: ", error.toString());
+            linkAnalysis(urlToAnalyze);
+
+            if (error.networkResponse != null) {
+                statusCode = error.networkResponse.statusCode;
+            }
+
+            // Pass relevant information to the method
         }
     };
 
@@ -215,5 +312,7 @@ public class LinkAnalysisActivity extends Activity {
         // Finish the activity or perform other actions as needed
         finish();
     }
+
+
 
 }
