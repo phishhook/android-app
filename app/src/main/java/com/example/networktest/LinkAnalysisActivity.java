@@ -28,6 +28,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
@@ -236,46 +238,45 @@ public class LinkAnalysisActivity extends Activity {
                 String clicked_at =  jsonObject.getString("clicked_at");
 
                 // Convert the clicked_at string to LocalDateTime
-                LocalDateTime clickedAtDateTime = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    clickedAtDateTime = LocalDateTime.parse(clicked_at);
+                    System.out.println("We have the right sdk");
+                    OffsetDateTime clickedAtDateTime = OffsetDateTime.parse(clicked_at, DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+                    LocalDateTime localDateTime = clickedAtDateTime.toLocalDateTime();
+
+
                     // If link was last clicked longer than one week
                     // prior to today, perform link analysis still
-                    if (!isClickedWithinOneWeek(clickedAtDateTime)) {
+                    if (!isClickedWithinOneWeek(localDateTime)) {
                         linkAnalysis(urlToAnalyze);
                     }
                 }
-                else {
-                    String percentage = jsonObject.getString("percentage");
-                    System.out.println("Retrieved percentage: " + percentage);
-                    String responseForIntent = percentage + ", " + urlToAnalyze;
-                    Intent resultIntent = new Intent();
-                    resultIntent.putExtra("resultData", responseForIntent);
-                    setResult(Activity.RESULT_OK, resultIntent);
-                    animationView.setVisibility(View.GONE);
-                    // Finish the activity
-                    finish();
-                }
+
+                String percentage = jsonObject.getString("percentage");
+                String responseForIntent = percentage + ", " + urlToAnalyze;
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("resultData", responseForIntent);
+                setResult(Activity.RESULT_OK, resultIntent);
+                animationView.setVisibility(View.GONE);
+                // Finish the activity
+                finish();
+
 
 
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
 
-            // Extract the percentage value
-
-
         }
     };
 
-    private static boolean isClickedWithinOneWeek(LocalDateTime clickedAtDateTime) {
+    static boolean isClickedWithinOneWeek(LocalDateTime clickedAtDateTime) {
         LocalDateTime oneWeekAgo = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            System.out.println("We have the right sdk");
             oneWeekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             return clickedAtDateTime.isAfter(oneWeekAgo);
         }
+
         return false;
     }
 

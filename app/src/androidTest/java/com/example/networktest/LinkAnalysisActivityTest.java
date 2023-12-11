@@ -2,9 +2,12 @@ package com.example.networktest;
 
 import android.app.Application;
 import android.content.Intent;
+import android.os.Build;
+
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,10 +20,16 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
+
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 @RunWith(AndroidJUnit4.class)
 public class LinkAnalysisActivityTest {
@@ -72,5 +81,29 @@ public class LinkAnalysisActivityTest {
         }
 
     }
+
+    @Test
+    public void testIsClickedWithinOneWeek() {
+
+        // Mocked clicked_at value for testing
+        LocalDateTime localDateTime = LocalDateTime.now();
+
+        // Use InstrumentationRegistry to run on the main thread
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(() -> {
+            LinkAnalysisActivity linkAnalysisActivity = new LinkAnalysisActivity();
+
+            // Test case: clicked_at is within one week
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                assertTrue(linkAnalysisActivity.isClickedWithinOneWeek(localDateTime));
+            }
+
+            // Test case: clicked_at is more than one week ago
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                LocalDateTime moreThanOneWeekAgo = localDateTime.minusDays(8);
+                assertFalse(linkAnalysisActivity.isClickedWithinOneWeek(moreThanOneWeekAgo));
+            }
+        });
+    }
+
 
 }
