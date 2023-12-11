@@ -54,29 +54,33 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         LoginFragment loginFragment = new LoginFragment();
         if (savedInstanceState == null) {
+            Fragment initialFragment;
             if (needsReAuthorization()) {
                 // Start with the Login Fragment, user can switch to Register Fragment if needed.
                 fragmentManager.beginTransaction()
                         .add(R.id.fragment_container, loginFragment)
                         .commit();
             } else {
-                BottomNavigationView navView = findViewById(R.id.navigation);
-                navView.setOnItemSelectedListener(item -> {
-                    Fragment selectedFragment = null;
-                    int itemId = item.getItemId();
-                    if (itemId == R.id.navigation_link_history) {
-                        selectedFragment = new LinkHistoryFragment();
-                    }
-                    else if (itemId== R.id.navigation_user_profile) {
-                        selectedFragment = new UserProfileFragment();
-                    }
-                    if (selectedFragment != null) {
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
-                    }
-                    return true;
-                });
+                // Default to the Link History Fragment
+                initialFragment = new LinkHistoryFragment();
             }
         }
+
+        BottomNavigationView navView = findViewById(R.id.navigation);
+        navView.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int itemId = item.getItemId();
+            if (itemId == R.id.navigation_link_history) {
+                selectedFragment = new LinkHistoryFragment();
+            }
+            else if (itemId== R.id.navigation_user_profile) {
+                selectedFragment = new UserProfileFragment();
+            }
+            if (selectedFragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            }
+            return true;
+        });
     }
 
     public void launch_analysis(@NonNull Uri my_uri){
