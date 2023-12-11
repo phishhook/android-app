@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                     if (itemId == R.id.navigation_link_history) {
                         selectedFragment = new LinkHistoryFragment();
                     }
-                    if (itemId== R.id.navigation_user_profile) {
+                    else if (itemId== R.id.navigation_user_profile) {
                         selectedFragment = new UserProfileFragment();
                     }
                     if (selectedFragment != null) {
@@ -77,28 +77,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }
-
-        Uri my_uri= getIntent().getData();
-
-        if (my_uri != null) {
-            //launch_analysis(my_uri);
-//            String url = my_uri.toString();
-//            String extractedUrl = extractUrl(url);
-//            Uri uri = Uri.parse(extractedUrl);
-//            Log.d("Received link: ", uri.toString());
-//            // Launch NotificationSystemActivity
-//            Intent notificationIntent = new Intent(MainActivity.this, NotificationSystemActivity.class);
-//            notificationIntent.setData(uri);
-//            startActivity(notificationIntent);
-        }
-        //Intent historyIntent = new Intent(MainActivity.this, LinkHistoryFragment.class);
-        //startActivity(historyIntent);
-
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container,LinkHistoryFragment.newInstance(null,null));
-        transaction.addToBackStack(null);
-        transaction.commit();
-
     }
 
     public void launch_analysis(@NonNull Uri my_uri){
