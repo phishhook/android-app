@@ -155,6 +155,8 @@ public class LoginFragment extends Fragment {
                 .replace(R.id.fragment_container, linkHistoryFragment, "LinkHistoryFragment")
                 .addToBackStack(null)
                 .commit();
+
+        ((MainActivity) getActivity()).setSelectedBottomNavigationItem(R.id.navigation_link_history);
     }
 
     public interface UserCheckCallback {

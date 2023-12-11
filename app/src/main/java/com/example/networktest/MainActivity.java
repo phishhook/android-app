@@ -54,16 +54,20 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         LoginFragment loginFragment = new LoginFragment();
         if (savedInstanceState == null) {
-            Fragment initialFragment;
+            Fragment initialFragment = new LinkHistoryFragment();
             if (needsReAuthorization()) {
                 // Start with the Login Fragment, user can switch to Register Fragment if needed.
                 fragmentManager.beginTransaction()
                         .add(R.id.fragment_container, loginFragment)
                         .commit();
             } else {
-                // Default to the Link History Fragment
                 initialFragment = new LinkHistoryFragment();
             }
+
+            // Add the initial fragment
+            fragmentManager.beginTransaction()
+                    .add(R.id.fragment_container, initialFragment)
+                    .commit();
         }
 
         BottomNavigationView navView = findViewById(R.id.navigation);
@@ -81,6 +85,11 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+    }
+
+    public void setSelectedBottomNavigationItem(int itemId) {
+        BottomNavigationView navView = findViewById(R.id.navigation);
+        navView.setSelectedItemId(itemId);
     }
 
     public void launch_analysis(@NonNull Uri my_uri){
