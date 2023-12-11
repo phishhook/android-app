@@ -21,12 +21,30 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- Line Divider -->
+        <View
+            android:id="@+id/firstDividerView"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linkAnalyzedTextView"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/darker_gray" />
+
+        <!-- Text showing the link analyzed -->
+        <TextView
+            android:id="@+id/linkResultTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/firstDividerView"
+            android:layout_marginTop="8dp"
+            android:text="http://example.com"
+            android:textSize="16sp" />
+
+        <!-- Second Line Divider -->
         <View
             android:id="@+id/linkDividerView"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/linkAnalyzedTextView"
+            android:layout_below="@id/linkResultTextView"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray" />
 
@@ -41,22 +59,12 @@
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <!-- Text showing the link analyzed -->
-        <TextView
-            android:id="@+id/linkResultTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/outcomeTextView"
-            android:layout_marginTop="8dp"
-            android:text="http://example.com"
-            android:textSize="16sp" />
-
-        <!-- Second Line Divider -->
+        <!-- Third Line Divider -->
         <View
             android:id="@+id/dividerView"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_below="@id/linkResultTextView"
+            android:layout_below="@id/outcomeTextView"
             android:layout_marginTop="8dp"
             android:background="@android:color/darker_gray" />
 

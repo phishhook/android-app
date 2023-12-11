@@ -2,6 +2,7 @@ package com.example.networktest;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,13 +27,15 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
 public class LinkAnalysisActivity extends Activity {
 
     private String MLApiURL = "http://ec2-34-226-215-44.compute-1.amazonaws.com/?url=";
-    private RequestQueue queue;
+    RequestQueue queue;
 
     private LottieAnimationView animationView;
 
@@ -55,8 +58,6 @@ public class LinkAnalysisActivity extends Activity {
         // Example URL for link analysis
         urlToAnalyze = getIntent().getStringExtra("url");
         rawUrl = urlToAnalyze;
-
-        Log.d("Raw url: ", rawUrl);
 
         //linkAnalysis(rawUrl);
         checkIfLinkInDatabase(rawUrl);
@@ -232,15 +233,31 @@ public class LinkAnalysisActivity extends Activity {
 
             try {
                 jsonObject = new JSONObject(response);
-                String percentage = jsonObject.getString("percentage");
-                System.out.println("Retreived percentage: " + percentage);
-                String responseForIntent = percentage + ", " + urlToAnalyze;
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("resultData", responseForIntent);
-                setResult(Activity.RESULT_OK, resultIntent);
-                animationView.setVisibility(View.GONE);
-                // Finish the activity
-                finish();
+                String clicked_at =  jsonObject.getString("clicked_at");
+
+                // Convert the clicked_at string to LocalDateTime
+                LocalDateTime clickedAtDateTime = null;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    clickedAtDateTime = LocalDateTime.parse(clicked_at);
+                    // If link was last clicked longer than one week
+                    // prior to today, perform link analysis still
+                    if (!isClickedWithinOneWeek(clickedAtDateTime)) {
+                        linkAnalysis(urlToAnalyze);
+                    }
+                }
+                else {
+                    String percentage = jsonObject.getString("percentage");
+                    System.out.println("Retrieved percentage: " + percentage);
+                    String responseForIntent = percentage + ", " + urlToAnalyze;
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("resultData", responseForIntent);
+                    setResult(Activity.RESULT_OK, resultIntent);
+                    animationView.setVisibility(View.GONE);
+                    // Finish the activity
+                    finish();
+                }
+
+
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
@@ -250,6 +267,17 @@ public class LinkAnalysisActivity extends Activity {
 
         }
     };
+
+    private static boolean isClickedWithinOneWeek(LocalDateTime clickedAtDateTime) {
+        LocalDateTime oneWeekAgo = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            oneWeekAgo = LocalDateTime.now().minus(7, ChronoUnit.DAYS);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            return clickedAtDateTime.isAfter(oneWeekAgo);
+        }
+        return false;
+    }
 
 
     Response.ErrorListener errorListener = new Response.ErrorListener() {
