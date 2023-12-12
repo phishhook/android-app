@@ -160,8 +160,12 @@ public class LinkAnalysisActivity extends Activity {
                 }
 
                 Log.d("User ID!!!",  String.valueOf(userId));
+                SharedPreferences sharedPref = getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                boolean anonymous = sharedPref.getBoolean("shouldAnonymize", false);
                 try {
-                    jsonBody.put("user_id", userId);
+                    // use arbitrary negative user id if user elects to keep their links anonymous
+                    // all real user ids should be positive and never retrieve this
+                    jsonBody.put("user_id", (anonymous ? -3 : userId));
                     jsonBody.put("url", rawUrl);
                     jsonBody.put("is_phishing", is_phishing);
                     jsonBody.put("percentage", result);

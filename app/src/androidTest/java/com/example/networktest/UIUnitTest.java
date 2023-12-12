@@ -29,6 +29,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 //import static androidx.core.util.Predicate.not;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
@@ -61,7 +62,7 @@ public class UIUnitTest {
     }
     @Test
     public void testValidLogin(){
-        onView(withId(R.id.editTextPhoneNumber)).perform(typeText("9203191799"));
+        onView(withId(R.id.editTextPhoneNumber)).perform(typeText("9203191799"), closeSoftKeyboard());
         onView(withId(R.id.buttonLogin)).perform(click());
         onView(withText("Welcome back, Lucas")).inRoot(withDecorView(not(decorView))).check(matches(isDisplayed()));
     }

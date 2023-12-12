@@ -63,6 +63,8 @@ public class UserProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.user_profile_fragment, container, false);
 
         SwitchCompat switchCompat = view.findViewById(R.id.switch_anon_link);
+        SharedPreferences sharedPrefs = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+        switchCompat.setChecked(sharedPrefs.getBoolean("shouldAnonymize", false));
         boolean isSwitchOn = switchCompat.isChecked();
         createOrUpdateAnonPreference(isSwitchOn);
         // To listen to state changes
@@ -75,6 +77,8 @@ public class UserProfileFragment extends Fragment {
                 } else {
                     createOrUpdateAnonPreference(false);
                 }
+                SharedPreferences sharedPrefs = getActivity().getSharedPreferences("AppPreferences", Context.MODE_PRIVATE);
+                Log.i("ANON?", ""+sharedPrefs.getBoolean("shouldAnonymize", false));
             }
         });
 
