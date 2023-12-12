@@ -73,11 +73,22 @@ public class LinkHistoryFragment extends Fragment {
         }
     }
 
+    Uri my_uri;
+    public void handleIntentData(Uri data) {
+        if (data != null) {
+            Log.d("LinkHistoryFragment", "Received intent data: " + data.toString());
+            my_uri = data;
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("MyApp", "Fragment/Activity Resumed: " + getClass().getSimpleName());
         MainActivity parent = (MainActivity) getActivity();
-        Uri my_uri = parent.getIntent().getData();
+        if(parent.getIntent().getData() != null){
+            my_uri = parent.getIntent().getData();
+        }
         if (my_uri != null){
             parent.launch_analysis(my_uri);
         }

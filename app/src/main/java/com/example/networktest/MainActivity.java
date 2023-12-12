@@ -141,6 +141,33 @@ public class MainActivity extends AppCompatActivity {
         queue.add(jsonMLRequest);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("MyApp", "Fragment/Activity Resumed: " + getClass().getSimpleName());
+        Uri my_uri= getIntent().getData();
+        if (my_uri != null) {
+            Log.d("MyApp", "Intent Data: " + my_uri.toString());
+        }
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        Uri my_uri = intent.getData();
+        if (my_uri != null) {
+            Log.d("MyApp", "New Intent Data: " + my_uri.toString());
+
+            // Find the instance of LinkHistoryFragment and call the method
+            LinkHistoryFragment linkHistoryFragment = (LinkHistoryFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+            if (linkHistoryFragment != null) {
+                linkHistoryFragment.handleIntentData(my_uri);
+            }
+        }
+    }
+
     Response.Listener<String> linkDataListener = new Response.Listener<String>() {
 
         @Override

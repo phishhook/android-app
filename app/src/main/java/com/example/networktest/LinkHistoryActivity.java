@@ -71,6 +71,12 @@ public class LinkHistoryActivity extends AppCompatActivity {
         queue.add(jsonLinkRequest);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d("MyApp", "Fragment/Activity Resumed: " + getClass().getSimpleName());
+    }
+
     protected void updateRecyclerView(){
         mAdapter = new CustomRecyclerViewAdapter(mDataList, this);
         mRecyclerView.setAdapter(mAdapter);
