@@ -61,8 +61,8 @@ public class LinkAnalysisActivity extends Activity {
         urlToAnalyze = getIntent().getStringExtra("url");
         rawUrl = urlToAnalyze;
 
-        //linkAnalysis(rawUrl);
-        checkIfLinkInDatabase(rawUrl);
+        linkAnalysis(rawUrl);
+        //checkIfLinkInDatabase(rawUrl);
 
         // Perform link analysis
 
@@ -205,7 +205,7 @@ public class LinkAnalysisActivity extends Activity {
             urlToAnalyze = responseArr[1].trim();
             writeResultToDatabase(percent);
             Intent resultIntent = new Intent();
-            String newResponse = responseArr[0]  + "," + rawUrl;
+            String newResponse = responseArr[0]  + "," + urlToAnalyze;
             resultIntent.putExtra("resultData", newResponse);
             setResult(Activity.RESULT_OK, resultIntent);
 
